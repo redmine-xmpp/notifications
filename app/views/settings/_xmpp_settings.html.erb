@@ -1,0 +1,12 @@
+<fieldset>
+  <legend><%= l(:xmpp_label_settings) %></legend>
+  <p>
+    <label><%= l(:xmpp_label_jid) %></label>
+    <%= text_field_tag "settings[jid]", @settings["jid"] %>
+  </p>
+  
+  <p>
+    <label><%= l(:xmpp_label_password) %></label>
+    <%= password_field_tag "settings[jidpassword]", @settings["jidpassword"] %>
+  </p>
+</fieldset>
