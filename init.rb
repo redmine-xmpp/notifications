@@ -14,6 +14,7 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   author "Pavel Musolin"
   description "A plugin to sends Redmine Activity over XMPP"
   version "1.0.0"
+  url "https://github.com/pmisters/redmine_xmpp_notifications"
   
   settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
 end
