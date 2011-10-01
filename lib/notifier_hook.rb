@@ -23,6 +23,9 @@ class NotifierHook < Redmine::Hook::Listener
     if issue.done_ratio
       text += "Done: #{issue.done_ratio} % \n"
     end
+    if issue.status
+      text += "Status: #{issue.status.name} \n"
+    end
     text += "\n\n#{issue.description}"
 
     deliver text, issue
@@ -51,6 +54,9 @@ class NotifierHook < Redmine::Hook::Listener
     end
     if issue.done_ratio
       text += "Done: #{issue.done_ratio} % \n"
+    end
+    if issue.status
+      text += "Status: #{issue.status.name} \n"
     end
     text += "\n\n#{journal.notes}"
 
