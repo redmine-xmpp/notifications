@@ -69,9 +69,14 @@ class NotifierHook < Redmine::Hook::Listener
   
   def deliver(message, issue)
     config = Setting.plugin_redmine_xmpp_notifications
-    client = Jabber::Simple.new config["jid"], config["jidpassword"]
-    User.active.each do |user|
-      client.deliver(user.xmpp_jid, message) if user.xmpp_jid != "" && user.notify_about?(issue)
+    begin
+      client = Jabber::Simple.new config["jid"], config["jidpassword"]
+      User.active.each do |user|
+        client.deliver(user.xmpp_jid, message) if user.xmpp_jid != "" && user.notify_about?(issue)
+      end
+    rescue
+      ## Error connect XMPP or Error send message
+      RAILS_DEFAULT_LOGGER.error "XMPP Error: #{$!}"
     end
   end
   
