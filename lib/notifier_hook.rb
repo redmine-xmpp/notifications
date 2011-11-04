@@ -6,6 +6,7 @@ class NotifierHook < Redmine::Hook::Listener
 
     text = "#{issue.author.name} created issue ##{issue.id} #{issue.subject} \n"
     text += "URL: #{redmine_url}/issues/#{issue.id} \n"
+    text += "PROJECT: #{issue.project} \n"
     text += "Tracker: #{issue.tracker.name} \n"
     text += "Priority: #{issue.priority.name} \n"
     if issue.assigned_to
@@ -38,6 +39,7 @@ class NotifierHook < Redmine::Hook::Listener
 
     text = "#{journal.user.name} updated issue ##{issue.id} #{issue.subject} \n"
     text += "URL: #{redmine_url}/issues/#{issue.id} \n"
+    text += "PROJECT: #{issue.project} \n"
     text += "Tracker: #{issue.tracker.name} \n"
     text += "Priority: #{issue.priority.name} \n"
     if issue.assigned_to
@@ -72,12 +74,16 @@ class NotifierHook < Redmine::Hook::Listener
     begin
       client = Jabber::Simple.new config["jid"], config["jidpassword"]
       User.active.each do |user|
-        client.deliver(user.xmpp_jid, message) if user.xmpp_jid != "" && user.notify_about?(issue)
+      	if user.xmpp_jid.nil? || user.xmpp_jid == "" || !user.notify_about?(issue)
+	  next
+	end
+        client.deliver user.xmpp_jid, message
       end
     rescue
       ## Error connect XMPP or Error send message
       RAILS_DEFAULT_LOGGER.error "XMPP Error: #{$!}"
     end
+    client = nil
   end
   
 end
