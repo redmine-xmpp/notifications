@@ -1,5 +1,7 @@
 class User < Principal
   has_one :xmpp_setting, :dependent => :destroy, :class_name => "XmppNotificationsUserSetting"
+
+  safe_attributes 'xmpp_jid'
   
   def xmpp_jid
     return "" unless self.xmpp_setting
