@@ -1,6 +1,6 @@
 require "redmine"
 
-RAILS_DEFAULT_LOGGER.info 'Starting XMPP Notifications Plugin for Redmine'
+# RAILS_DEFAULT_LOGGER.info 'Starting XMPP Notifications Plugin for Redmine'
 
 require "rubygems"
 require "xmpp4r-simple"
