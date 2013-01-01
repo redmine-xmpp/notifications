@@ -1,31 +1,34 @@
 class NotifierHook < Redmine::Hook::Listener
   
+#TODO: it is plans to rename hooks in upstream
   def controller_issues_new_after_save(context={})
     redmine_url = "#{Setting[:protocol]}://#{Setting[:host_name]}"
     issue = context[:issue]
 
-    text = "#{issue.author.name} created issue ##{issue.id} #{issue.subject} \n"
-    text += "URL: #{redmine_url}/issues/#{issue.id} \n"
-    text += "PROJECT: #{issue.project} \n"
-    text += "Tracker: #{issue.tracker.name} \n"
-    text += "Priority: #{issue.priority.name} \n"
+    text = l(:xmpp_issue_created) + " ##{issue.id}\n\n"
+    text += l(:field_author) + ": #{issue.author.name}\n" 
+    text += l(:field_subject) + ": #{issue.subject}\n"
+    text += l(:field_url) + ": #{redmine_url}/issues/#{issue.id}\n"
+    text += l(:field_project) + ": #{issue.project}\n"
+    text += l(:field_tracker) + ": #{issue.tracker.name}\n"
+    text += l(:field_priority) + ": #{issue.priority.name}\n"
     if issue.assigned_to
-      text += "Assigned to: #{issue.assigned_to.name} \n"
+      text += l(:field_assigned_to) + ": #{issue.assigned_to.name}\n"
     end
     if issue.start_date
-      text += "Start: #{issue.start_date.strftime("%e %B %Y")} \n"
+      text += l(:field_start_date) + ": #{issue.start_date.strftime("%d.%m.%Y")}\n"
     end
     if issue.due_date
-      text += "Due: #{issue.due_date.strftime("%e %B %Y")} \n"
+      text += l(:field_due_date) + ": #{issue.due_date.strftime("%d.%m.%Y")}\n"
     end
     if issue.estimated_hours
-      text += "Estimated time: #{issue.estimated_hours} hours \n"
+      text += l(:field_estimated_hours) + ": #{issue.estimated_hours} " + l(:field_hours) + "\n"
     end
     if issue.done_ratio
-      text += "Done: #{issue.done_ratio} % \n"
+      text += l(:field_done_ratio) + ": #{issue.done_ratio}%\n"
     end
     if issue.status
-      text += "Status: #{issue.status.name} \n"
+      text += l(:field_status) + ": #{issue.status.name}\n"
     end
     text += "\n\n#{issue.description}"
 
@@ -37,28 +40,30 @@ class NotifierHook < Redmine::Hook::Listener
     issue = context[:issue]
     journal = context[:journal]
 
-    text = "#{journal.user.name} updated issue ##{issue.id} #{issue.subject} \n"
-    text += "URL: #{redmine_url}/issues/#{issue.id} \n"
-    text += "PROJECT: #{issue.project} \n"
-    text += "Tracker: #{issue.tracker.name} \n"
-    text += "Priority: #{issue.priority.name} \n"
+    text = l(:xmpp_issue_updated) + " ##{issue.id}\n\n"
+    text += l(:xmpp_update_author) + ": #{journal.user.name}\n"
+    text += l(:field_subject) + ": #{issue.subject}\n"
+    text += l(:field_url) + ": #{redmine_url}/issues/#{issue.id}\n"
+    text += l(:field_project) + ": #{issue.project}\n"
+    text += l(:field_tracker) + ": #{issue.tracker.name}\n"
+    text += l(:field_priority) + ": #{issue.priority.name}\n"
     if issue.assigned_to
-      text += "Assigned to: #{issue.assigned_to.name} \n"
+      text += l(:field_assigned_to) + ": #{issue.assigned_to.name}\n"
     end
     if issue.start_date
-      text += "Start: #{issue.start_date.strftime("%e %B %Y")} \n"
+      text += l(:field_start_date) + ": #{issue.start_date.strftime("%d.%m.%Y")}\n"
     end
     if issue.due_date
-      text += "Due: #{issue.due_date.strftime("%e %B %Y")} \n"
+      text += l(:field_due_date) + ": #{issue.due_date.strftime("%d.%m.%Y")}\n"
     end
     if issue.estimated_hours
-      text += "Estimated time: #{issue.estimated_hours} hours \n"
+      text += l(:field_estimated_hours) + ": #{issue.estimated_hours} " + l(:field_hours) + "\n"
     end
     if issue.done_ratio
-      text += "Done: #{issue.done_ratio} % \n"
+      text += l(:field_done_ratio) + ": #{issue.done_ratio}%\n"
     end
     if issue.status
-      text += "Status: #{issue.status.name} \n"
+      text += l(:field_status) + ": #{issue.status.name}\n"
     end
     text += "\n\n#{journal.notes}"
 
