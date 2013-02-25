@@ -1,6 +1,6 @@
 class XmppNotificationsUserSetting < ActiveRecord::Base
   unloadable
-  belonds_to :user
+  belongs_to :user
   validates_presence_of :user
   
   SYSTEM_SETTING = "__system_setting__"
