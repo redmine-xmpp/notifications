@@ -2,6 +2,6 @@ en:
   xmpp_label_settings: XMPP Notifications settings
   xmpp_label_jid: Jabber ID (jid@server.tld/resource)
   xmpp_label_password: Password
-  xmpp_issue_created: Issue was created:
-  xmpp_issue_updated: Issue was updated:
+  xmpp_issue_created: "Issue was created:"
+  xmpp_issue_updated: "Issue was updated:"
   xmpp_update_author: Author of changes
