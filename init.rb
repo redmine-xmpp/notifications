@@ -1,5 +1,4 @@
 require "redmine"
-require "rubygems"
 require "xmpp4r"
 
 require_dependency "xmpp_bot"
