@@ -20,7 +20,7 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   version "2.0.0"
   url "https://github.com/yokujin/redmine_xmpp_notifications"
 
-  settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
+  settings :default => {"jid" => "", "password" => "", "send_to_watchers" => true}, :partial => "settings/xmpp_settings"
 end
 
 Rails.logger.info "#{'*'*65}\n* XMPP Bot init.rb\n#{'*'*65}"

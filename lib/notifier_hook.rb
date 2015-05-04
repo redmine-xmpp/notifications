@@ -80,7 +80,9 @@ class NotifierHook < Redmine::Hook::Listener
 
     def deliver(message, object)
         author = object.try(:user) || object.try(:author)
-        notification_recipients = (object.notified_users + object.notified_watchers).uniq
+        notification_recipients = object.notified_users
+        notification_recipients += object.notified_watchers if config["send_to_watchers"]
+        notification_recipients.uniq!
         notification_recipients.delete(author) if author.logged? && author.pref.no_self_notified
         return if notification_recipients.empty?
         jids = notification_recipients.collect {|jid| jid.xmpp_jid.presence }.flatten.compact
@@ -93,4 +95,7 @@ class NotifierHook < Redmine::Hook::Listener
         end
     end
 
+    def config
+        Setting.plugin_redmine_xmpp_notifications
+    end
 end
