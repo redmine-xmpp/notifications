@@ -1,6 +1,6 @@
 require "redmine"
 require "rubygems"
-require "xmpp4r-simple"
+require "xmpp4r"
 
 require_dependency "notifier_hook"
 require_dependency "my_account_hooks"
