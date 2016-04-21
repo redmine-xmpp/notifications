@@ -79,7 +79,7 @@ class NotifierHook < Redmine::Hook::Listener
     private
 
     def deliver(message, issue)
-        begin
+        # begin
             User.active.each do |user|
                 if user.xmpp_jid.nil? || user.xmpp_jid == "" || !user.notify_about?(issue)
                     next
@@ -87,10 +87,10 @@ class NotifierHook < Redmine::Hook::Listener
                 ap "="*20 + " Sending message to #{user.xmpp_jid} " + "="*20
                 Bot.deliver user.xmpp_jid, message
             end
-        rescue
+        # rescue
             ## Error connect XMPP or Error send message
             # RAILS_DEFAULT_LOGGER.error "XMPP Error: #{$!}"
-        end
+        # end
     end
 
 end
