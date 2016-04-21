@@ -2,6 +2,7 @@ require "redmine"
 require "rubygems"
 require "xmpp4r"
 
+require_dependency "xmpp_bot"
 require_dependency "notifier_hook"
 require_dependency "my_account_hooks"
 require_dependency "user_hooks"
@@ -21,4 +22,8 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   url "https://github.com/yokujin/redmine_xmpp_notifications"
 
   settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
+end
+
+Rails.configuration.to_prepare do
+    Bot.ping
 end
