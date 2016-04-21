@@ -84,7 +84,8 @@ class NotifierHook < Redmine::Hook::Listener
                 if user.xmpp_jid.nil? || user.xmpp_jid == "" || !user.notify_about?(issue)
                     next
                 end
-                client.deliver user.xmpp_jid, message
+                ap "="*20 + " Sending message to #{user.xmpp_jid} " + "="*20
+                Bot.deliver user.xmpp_jid, message
             end
         rescue
             ## Error connect XMPP or Error send message
