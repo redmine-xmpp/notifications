@@ -1,8 +1,8 @@
+require_relative './xmpp_bot'
+
 class NotifierHook < Redmine::Hook::Listener
 
     def initialize
-        @client = nil
-        @config = Setting.plugin_redmine_xmpp_notifications
     end
 
     #TODO: it is plans to rename hooks in upstream
@@ -77,13 +77,6 @@ class NotifierHook < Redmine::Hook::Listener
 
 
     private
-
-    def client
-        @client = Jabber::Simple.new @config["jid"], @config["jidpassword"] if @client.nil?
-        @client.reconnect() unless @client.connected?
-        @client
-    end
-
 
     def deliver(message, issue)
         begin
