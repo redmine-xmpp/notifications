@@ -24,6 +24,11 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
 end
 
-Rails.configuration.to_prepare do
-    Bot.ping
+# dirty hack
+# ap [File.basename($0), ARGV.join(' ')]
+
+if defined?(::PhusionPassenger) || ARGV.join(' ') =~ %r{webrick}
+    Rails.configuration.to_prepare do
+        Bot.ping
+    end
 end
