@@ -11,70 +11,81 @@ class Bot
 
     class << self
         extend Forwardable
-        def_delegators :instance, :deliver, :setup
+        def_delegators :instance, :deliver, :ping
     end
 
     def ping
         # pong
     end
 
-    def comment issue, message
-        ap "ASKED TO COMMENT"
-        ap issue
-        ap message
+    ###################################
+    # COMMENT
+    ###################################
+    def add_comment original_message, issue, comment
+        jid = Jabber::JID.new(original_message.from)
+        # TODO: check if multiple users have the same jid
+        user = XmppNotificationsUserSetting.where(jid: jid.strip.to_s).first.user
+        iss = Issue.find(issue)
+
+
+        if user.allowed_to?(:edit_issues, iss.project)
+            iss.journals.create notes: comment
+            deliver original_message.from, "Added new comment to issue: " + iss.subject
+        else
+            deliver original_message.from, "Sorry! You've no rights to comment that issue"
+        end
+    rescue ActiveRecord::RecordNotFound => e
+        deliver original_message.from, "ERROR: unknown issue"
+    end
+
+    ###################################
+    # SET STATE
+    ###################################
+    def set_state original_message, issue, state
+        iss = Issue.find(issue)
+
+        deliver original_message.from, "ERROR: Not implemented yet"
+    rescue ActiveRecord::RecordNotFound => e
+        deliver original_message.from, "ERROR: unknown issue"
     end
 
     def initialize
-        ap "bot init"
         @config = Setting.plugin_redmine_xmpp_notifications
 
         @jabber_id = @config["jid"]
         @jabber_password = @config["jidpassword"] or ENV['jabber_password'] or ''
 
         @static_config = {
-            %r{^c([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |issue, message|
-                comment(issue, message)
-            end
+            %r{^c([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, comment_message|
+                add_comment(original_message, issue, comment_message)
+            end,
+            %r{^s([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, state|
+                set_state(original_message, issue, state)
+            end,
         }
 
-        ap "===================================== Creating bot ============================"
         connect
     end
 
     def connect
-        ap "bot connect"
-        ap @client
         return unless @client.nil?
-        ap "has to create client"
+
         jid = JID.new(@jabber_id)
         @client = Client.new jid
         @client.connect
         @client.auth @jabber_password
         @client.send(Presence.new.set_type(:available))
-        puts "Hurray...!!  Connected..!!"
 
         @client.add_message_callback do |message|
-            ap "="*20 + " Received message " + "="*20
-            ap message
-
             unless message.body.nil? && message.type != :error
                 body = message.body
-                puts "Received message: #{message.body}"
-                #Echo the received message back to the sender.
-                # reply = Message.new(message.from, message.body)
-                # reply.type = message.type
-                # @client.send(reply)
 
-                @static_config.each do |rx, block|
-                    if m = rx.match(body)
-                        block.call(*m.captures)
-                    else
-                        deliver message.from, "What are you talking about?"
-                    end
+                if @static_config.map { |rx, block| if m=rx.match(body) then block.call(message, *m.captures); 1 end }.reject(&:nil?).empty? then
+                    deliver message.from, "What are you talking about?"
                 end
+
             end
         end
-
     end
 
     def deliver jid, message, message_type = :chat
