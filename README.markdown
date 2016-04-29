@@ -6,9 +6,10 @@ Following actions will result in notifications to Jabber:
 
 - Create and update issues
 
-Following commands hardcoded into this bot:
-- `cXXXXX any_message_you_want_to_set_as_comment_for_issue_number_XXXXX`
-- `sXXXXX new_status_for_issue_number_XXXXX`
+Following commands hardcoded into the bot (underscores and angle brackets here for logical grouping purposes only):
+- `+#XXXXX <any_message_you_want_to_set_as_comment_for_issue_number_XXXXX>`
+- `.#XXXXX <new_status_for_issue_number_XXXXX>`
+  + statuses are: `not`, `yet`, `decided`
 
 ## Installation & Configuration
 

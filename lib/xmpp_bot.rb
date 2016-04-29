@@ -56,10 +56,10 @@ class Bot
         @jabber_password = @config["jidpassword"] or ENV['jabber_password'] or ''
 
         @static_config = {
-            %r{^c([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, comment_message|
+            %r{^\+#([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, comment_message|
                 add_comment(original_message, issue, comment_message)
             end,
-            %r{^s([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, state|
+            %r{^\.#([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, state|
                 set_state(original_message, issue, state)
             end,
         }
