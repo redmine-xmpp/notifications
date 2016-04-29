@@ -10,6 +10,9 @@ Following commands hardcoded into the bot (underscores and angle brackets here f
 - `+#XXXXX <any_message_you_want_to_set_as_comment_for_issue_number_XXXXX>`
 - `.#XXXXX <new_status_for_issue_number_XXXXX>`
   + statuses are: `not`, `yet`, `decided`
+- `!# <description> +<project_name_substring_or_id> [!<assigned_to>]* [@<watcher>]*`
+  + if `assigned_to` is not specified issue will be assigned to the user who sent command
+  + `project_name_substring_or_id` can contain spaces. In that case it should be surrounded in `"double quotes"`
 
 ## Installation & Configuration
 
