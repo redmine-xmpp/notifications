@@ -12,12 +12,12 @@ Following commands hardcoded into this bot:
 
 ## Installation & Configuration
 
+- Then install the Plugin following the general Redmine [plugin installation instructions](http://www.redmine.org/wiki/redmine/Plugins).
 - The XMPP Notifications Plugin depends on the [Xmpp4r](https://xmpp4r.github.io/). This can be installed with `bundler` in top Redmine directory:
 ```
 cd <redmine_installation_directory>
 bundle install
 ```
-- Then install the Plugin following the general Redmine [plugin installation instructions](http://www.redmine.org/wiki/redmine/Plugins).
 - Go to the Plugins section of the Administration page, select Configure.
 - On this page fill out the Jabber ID and password for user who will send messages.
 - If you want bot to go online when Redmine starts set `XMPP_BOT_STARTUP` environment variable to any value.
