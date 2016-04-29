@@ -1,9 +1,14 @@
 # XMPP Notifications Plugin for Redmine
 
 This plugin is intended to provide _not so_ basic integration with XMPP messenger (Jabber).
+
 Following actions will result in notifications to Jabber:
 
 - Create and update issues
+
+Following commands hardcoded into this bot:
+- `cXXXXX any_message_you_want_to_set_as_comment_for_issue_number_XXXXX`
+- `sXXXXX new_status_for_issue_number_XXXXX`
 
 ## Installation & Configuration
 
@@ -15,4 +20,10 @@ bundle install
 - Then install the Plugin following the general Redmine [plugin installation instructions](http://www.redmine.org/wiki/redmine/Plugins).
 - Go to the Plugins section of the Administration page, select Configure.
 - On this page fill out the Jabber ID and password for user who will send messages.
+- If you want bot to go online when Redmine starts set `XMPP_BOT_STARTUP` environment variable to any value.
 - Restart your Redmine web servers (e.g. mongrel, thin, mod_rails).
+
+## TODO
+- Allow notifications to be sent after using bot commands
+- Move all bot logic into background process (possibly via `Sidekiq`) and use them via asynchronous background jobs
+- Make all commands configurable via Web interface.

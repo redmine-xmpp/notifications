@@ -24,11 +24,7 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
 end
 
-# dirty hack
-# ap [File.basename($0), ARGV.join(' ')]
-
-if defined?(::PhusionPassenger) || ARGV.join(' ') =~ %r{webrick}
-    Rails.configuration.to_prepare do
-        Bot.ping
-    end
+# Start bot only when XMPP_BOT_STARTUP env var is set
+ENV['XMPP_BOT_STARTUP'] && Rails.configuration.to_prepare do
+    Bot.ping
 end
