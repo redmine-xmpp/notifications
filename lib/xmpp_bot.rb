@@ -2,6 +2,7 @@ require 'xmpp4r'
 require 'xmpp4r/client'
 require 'forwardable'
 require 'singleton'
+require 'ap'
 
 class Bot
     include Jabber
@@ -163,6 +164,8 @@ class Bot
     end
 
     def initialize
+        Rails.logger.info "#{'*'*65}\n* Initializing XMPP Bot\n#{'*'*65}"
+
         @config = Setting.plugin_redmine_xmpp_notifications
 
         @jabber_id = @config["jid"]
@@ -185,6 +188,8 @@ class Bot
 
     def connect
         return unless @client.nil?
+
+        Rails.logger.info "#{'*'*65}\n* XMPP Bot <#{@jabber_id}> started connecting to server\n#{'*'*65}"
 
         jid = JID.new(@jabber_id)
         @client = Client.new jid

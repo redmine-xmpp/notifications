@@ -24,7 +24,12 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   settings :default => {"jid" => "", "password" => ""}, :partial => "settings/xmpp_settings"
 end
 
+Rails.logger.info "#{'*'*65}\n* XMPP Bot init.rb\n#{'*'*65}"
+
+
 # Start bot only when XMPP_BOT_STARTUP env var is set
 ENV['XMPP_BOT_STARTUP'] && Rails.configuration.to_prepare do
+    Rails.logger.info "#{'*'*65}\n* XMPP_BOT_STARTUP env var exists - requesting bot startup\n#{'*'*65}"
+
     Bot.ping
 end
