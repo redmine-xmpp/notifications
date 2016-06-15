@@ -180,7 +180,7 @@ class Bot
             end,
         }
 
-        connect
+        connect unless @jabber_id.blank?
     end
 
     def connect
