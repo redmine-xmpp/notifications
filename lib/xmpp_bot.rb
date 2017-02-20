@@ -37,7 +37,8 @@ class Bot
 
 
         if user.allowed_to?(:edit_issues, iss.project)
-            iss.journals.create notes: comment
+	    journal = iss.init_journal(user, comment)
+            journal.save
             deliver original_message.from, "Added new comment to issue: " + iss.subject
         else
             deliver original_message.from, "Sorry! You've no rights to comment that issue"
