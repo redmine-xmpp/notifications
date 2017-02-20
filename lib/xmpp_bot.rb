@@ -74,7 +74,7 @@ class Bot
     ###################################
     def create_new_issue original_message, message
         # iss = Issue.find(issue)
-        rmentions = %r{(?'project'\+(?:\w+|"[\w\s]+"))|(?'assigned'\!\w+)|(?'watcher'\@\w+)}
+        rmentions = %r{(?'project'\+(?:[\w-_]+|"[\w\-_\s]+"))|(?'assigned'\!\w+)|(?'watcher'\@\w+)}
         user = jid_user original_message.from
 
         mentions = Hash.new([].freeze)
