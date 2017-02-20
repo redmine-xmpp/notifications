@@ -72,17 +72,17 @@ class NotifierHook < Redmine::Hook::Listener
         end
         text += "\n\n#{journal.notes}"
 
-        deliver text, issue
+        deliver text, journal
     end
 
 
     private
 
-    def deliver(message, issue)
+    def deliver(message, object)
         User.active.each do |user|
-            if user.xmpp_jid.nil? || user.xmpp_jid == "" || !user.notify_about?(issue)
-                next
-            end
+            author = object.try(:user) || object.try(:author)
+            next if user == author && author.logged? && author.pref.no_self_notified
+            next unless user.xmpp_jid.present? && object.notified_users.include?(user)
             Bot.deliver user.xmpp_jid, message
         end
     end
