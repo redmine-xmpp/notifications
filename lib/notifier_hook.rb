@@ -82,7 +82,8 @@ class NotifierHook < Redmine::Hook::Listener
         User.active.each do |user|
             author = object.try(:user) || object.try(:author)
             next if user == author && author.logged? && author.pref.no_self_notified
-            next unless user.xmpp_jid.present? && object.notified_users.include?(user)
+            notification_recipients = (object.notified_users + object.notified_watchers).uniq
+            next unless user.xmpp_jid.present? && notification_recipients.include?(user)
             Bot.deliver user.xmpp_jid, message
         end
     end
