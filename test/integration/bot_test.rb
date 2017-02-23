@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper', __FILE__)
+require File.expand_path('../../test_helper', __FILE__)
 
 class BotTest <  ActiveSupport::TestCase
   test 'regular expression for mentions accepts project names' do
