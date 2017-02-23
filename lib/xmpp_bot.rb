@@ -211,11 +211,24 @@ class Bot
 
             end
         end
+
+    rescue Jabber::JabberError, SocketError, Errno::ENETUNREACH => e
+        Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
+        @client = nil
+    end
+
+    def client
+        connect if @client.nil?
+        @client
     end
 
     def deliver jid, message, message_type = :chat
         message = Message.new(jid, message)
         message.type = message_type
-        @client.send(message)
+        client.tap {|client|
+            client.send(message) unless client.nil?
+        }
+    rescue Jabber::JabberError, SocketError, Errno::ENETUNREACH => e
+        Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
     end
 end
