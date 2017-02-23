@@ -74,17 +74,16 @@ class Bot
     ###################################
     def create_new_issue original_message, message
         # iss = Issue.find(issue)
-        rmentions = %r{(?'project'\+(?:[\w-_]+|"[\w\-_\s]+"))|(?'assigned'\!\w+)|(?'watcher'\@\w+)}
         user = jid_user original_message.from
 
         mentions = Hash.new([].freeze)
-        match_all(message, rmentions).each do |match|
+        match_all(message, Bot.mentions_regexp).each do |match|
             match.names.each do |name|
                 mentions[name] += [match[name]] unless match[name].nil?
             end
         end
 
-        subject = message.gsub(rmentions, '').strip
+        subject = message.gsub(Bot.mentions_regexp, '').strip
 
         ##### GETTING PROJECT
         if mentions["project"].length.zero?
@@ -150,6 +149,10 @@ class Bot
         # deliver original_message.from, "ERROR: Not implemented yet"
     rescue ActiveRecord::RecordNotFound => e
         deliver original_message.from, "ERROR: unknown issue"
+    end
+
+    def self.mentions_regexp
+        %r{(?'project'\+(?:[\w\-_]+|"[\w\-_\s]+"))|(?'assigned'\!\w+)|(?'watcher'\@\w+)}
     end
 
     def match_all(match_str, regex)
