@@ -4,7 +4,7 @@ class NotifierHookTest <  ActiveSupport::TestCase
   fixtures :projects, :users, :members, :member_roles, :roles, :issues, :journals, :journal_details, :enabled_modules,
            :trackers, :issue_statuses, :enumerations, :custom_values, :projects_trackers
 
-  test 'it delivers to watchers' do
+  test '#controller_issues_edit_after_save delivers to watchers' do
     user = User.generate!(xmpp_jid: 'name@jabberserver.tld')
     issue = Issue.first
     Watcher.create!(watchable: issue, user: user)
@@ -31,6 +31,21 @@ Journal notes
     NotifierHook.instance.controller_issues_edit_after_save(
       issue:   issue,
       journal: issue.journals.first
+    )
+  end
+
+  test '#controller_issues_edit_after_save doesn\'t report own actions if preference is set' do
+    issue = Issue.first
+    journal = issue.journals.second
+    author = journal.user
+    author.pref.update(no_self_notified: true)
+    author.update(xmpp_jid: 'name@jabberserver.tld')
+
+    Bot.expects(:deliver).never
+
+    NotifierHook.instance.controller_issues_edit_after_save(
+        issue:   issue,
+        journal: journal
     )
   end
 end

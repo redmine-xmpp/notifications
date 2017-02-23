@@ -81,12 +81,15 @@ class NotifierHook < Redmine::Hook::Listener
     def deliver(message, object)
         author = object.try(:user) || object.try(:author)
         notification_recipients = (object.notified_users + object.notified_watchers).uniq
-        jids = notification_recipients.collect(&:xmpp_jid).flatten.compact
+        notification_recipients.delete(author) if author.logged? && author.pref.no_self_notified
+        return if notification_recipients.empty?
+        jids = notification_recipients.collect {|jid| jid.xmpp_jid.presence }.flatten.compact
+        return if jids.empty?
+
         Rails.logger.info "Sending XMPP notification to: #{jids.join(', ')}"
-        User.active.each do |user|
-            next if user == author && author.logged? && author.pref.no_self_notified
-            next unless user.xmpp_jid.present? && notification_recipients.include?(user)
-            Bot.deliver user.xmpp_jid, message
+        jids.each do |jid|
+            next unless jid.present?
+            Bot.deliver jid, message
         end
     end
 
