@@ -222,13 +222,19 @@ class Bot
         @client
     end
 
-    def deliver jid, message, message_type = :chat
-        message = Message.new(jid, message)
+    def deliver jid, message_text, message_type = :chat
+        message = Message.new(jid, message_text)
         message.type = message_type
         client.tap {|client|
             client.send(message) unless client.nil?
         }
     rescue Jabber::JabberError, SocketError, Errno::ENETUNREACH => e
         Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
+    rescue Encoding::CompatibilityError => e
+        Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
+        Rails.logger.error "#{self.class.name}##{__method__}(#{jid}, #{message_text}, #{message_type})"
+        Rails.logger.error(
+            "encoded arguments #{jid.force_encoding('ASCII-8BIT')}, #{message_text.force_encoding('ASCII-8BIT')}"
+        )
     end
 end
