@@ -212,7 +212,7 @@ class Bot
             end
         end
 
-    rescue Jabber::JabberError, SocketError, Errno::ENETUNREACH => e
+    rescue => e
         Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
         @client = nil
     end
@@ -228,13 +228,14 @@ class Bot
         client.tap {|client|
             client.send(message) unless client.nil?
         }
-    rescue Jabber::JabberError, SocketError, Errno::ENETUNREACH => e
-        Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
     rescue Encoding::CompatibilityError => e
         Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
         Rails.logger.error "#{self.class.name}##{__method__}(#{jid}, #{message_text}, #{message_type})"
         Rails.logger.error(
             "encoded arguments #{jid.force_encoding('ASCII-8BIT')}, #{message_text.force_encoding('ASCII-8BIT')}"
         )
+    rescue => e
+        Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
+        @client = nil
     end
 end
