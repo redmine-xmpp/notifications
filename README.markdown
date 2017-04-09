@@ -1,6 +1,6 @@
 # XMPP Notifications Plugin for Redmine
 
-This plugin is intended to provide _not so_ basic integration with XMPP messenger (Jabber).
+This plugin is intended to provide integration with XMPP messenger (Jabber).
 
 Following actions will result in notifications to Jabber:
 
