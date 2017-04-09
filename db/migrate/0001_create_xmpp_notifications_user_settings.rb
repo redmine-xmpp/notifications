@@ -8,6 +8,6 @@ class CreateXmppNotificationsUserSettings < ActiveRecord::Migration
   end
   
   def self.down
-    drop_table :xmpp_notifications_user_setting
+    drop_table :xmpp_notifications_user_settings
   end
 end
