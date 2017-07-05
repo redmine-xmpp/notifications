@@ -1,5 +1,5 @@
 class XmppNotificationsMyAccountHooks < Redmine::Hook::ViewListener
-  def view_my_account(context={})
+  def xmpp_user_text_field(context={})
     user = context[:user]
     f = context[:form]
     return "" unless user
@@ -9,4 +9,7 @@ class XmppNotificationsMyAccountHooks < Redmine::Hook::ViewListener
     res << "</p>"
     return res
   end
+
+  alias_method :view_my_account, :xmpp_user_text_field
+  alias_method :view_users_form, :xmpp_user_text_field
 end

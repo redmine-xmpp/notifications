@@ -4,6 +4,7 @@ require "xmpp4r"
 require_dependency "xmpp_bot"
 require_dependency "notifier_hook"
 require_dependency "my_account_hooks"
+#require_dependency "issue" #TODO
 require_dependency "user_hooks"
 require_dependency "user"
 
@@ -15,10 +16,10 @@ end
 
 Redmine::Plugin.register :redmine_xmpp_notifications do
   name "Redmine XMPP Notifications plugin"
-  author "Pavel Musolin & Vadim Misbakh-Soloviov & Yokujin Yokosuka"
+  author "Pavel Musolin & Vadim Misbakh-Soloviov & Yokujin Yokosuka & Others"
   description "A plugin to send Redmine Activity and receive commands over XMPP"
-  version "2.0.0"
-  url "https://github.com/yokujin/redmine_xmpp_notifications"
+  version "2.1.0"
+  url "https://github.com/redmine-xmpp/notifications"
 
   settings :default => {"jid" => "", "password" => "", "send_to_watchers" => true}, :partial => "settings/xmpp_settings"
 end

@@ -1,6 +1,6 @@
 # XMPP Notifications Plugin for Redmine
 
-This plugin is intended to provide _not so_ basic integration with XMPP messenger (Jabber).
+This plugin is intended to provide integration with XMPP messenger (Jabber).
 
 Following actions will result in notifications to Jabber:
 
@@ -18,7 +18,7 @@ Following commands hardcoded into the bot (underscores and angle brackets here f
 
 - Then install the Plugin following the general Redmine [plugin installation instructions](http://www.redmine.org/wiki/redmine/Plugins).
 - The XMPP Notifications Plugin depends on the [Xmpp4r](https://xmpp4r.github.io/). This can be installed with `bundler` in top Redmine directory:
-```
+```ShellSession
 cd <redmine_installation_directory>
 bundle install
 ```
@@ -31,3 +31,5 @@ bundle install
 - Allow notifications to be sent after using bot commands
 - Move all bot logic into background process (possibly via `Sidekiq`) and use them via asynchronous background jobs
 - Make all commands configurable via Web interface.
+- Add possibility to deliver notifications in MUC(s?). refs: https://github.com/redmine-xmpp/notifications/issues/13 and https://github.com/YunoHost/redmine_xmpp_muc_notifications
+- Add possibility to choose whether notifications should be deliver to only MUC(s?) or both in MUC(s) and with direct messages.
