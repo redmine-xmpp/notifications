@@ -1,0 +1,7 @@
+<%= l(:text_issue_added, id: "##{issue.id}", author: issue.author) %>
+
+<%= "#{issue.description}" if issue.description.present? %>
+
+----------------------------------------
+
+<%= render partial: "xmpp/issue", formats: [:text] %>

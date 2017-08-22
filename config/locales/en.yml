@@ -4,6 +4,3 @@ en:
   xmpp_label_password: Password
   xmpp_label_notification_settings: Notification settings
   xmpp_label_send_to_watchers: Send notifications to watchers?
-  xmpp_issue_created: "Issue was created:"
-  xmpp_issue_updated: "Issue was updated:"
-  xmpp_update_author: Author of changes
