@@ -3,6 +3,7 @@ require 'xmpp4r/client'
 require 'forwardable'
 require 'singleton'
 require 'ap'
+require 'securerandom'
 
 class Bot
   include Jabber
@@ -226,7 +227,7 @@ class Bot
   end
 
   def deliver jid, message_text, message_type = :chat
-    message = Message.new(jid, message_text)
+    message = Message.new(jid, message_text).set_id(SecureRandom.uuid)
     message.type = message_type
     client.tap {|client|
       client.send(message) unless client.nil?
