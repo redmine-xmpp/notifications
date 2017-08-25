@@ -1,0 +1,13 @@
+<%= "#{issue.tracker.name} ##{issue.id}: #{issue.subject}" %>
+
+<%= "#{l(:field_author)}: #{issue.author.name}" %>
+<%= "#{l(:field_url)}: #{redmine_url}/issues/#{issue.id}" %>
+<%= "#{l(:field_project)}: #{issue.project}" %>
+<%= "#{l(:field_tracker)}: #{issue.tracker.name}" %>
+<%= "#{l(:field_priority)}: #{issue.priority.name}" %>
+<%= "#{l(:field_assigned_to)}: #{issue.assigned_to.name}\n" if issue.assigned_to -%>
+<%= "#{l(:field_start_date)}: #{issue.start_date.strftime("%d.%m.%Y")}\n" if issue.start_date -%>
+<%= "#{l(:field_due_date)}: #{issue.due_date.strftime("%d.%m.%Y")}\n" if issue.due_date -%>
+<%= "#{l(:field_estimated_hours)}: #{issue.estimated_hours} #{l(:field_hours)}\n" if issue.estimated_hours -%>
+<%= "#{l(:field_done_ratio)}: #{issue.done_ratio}%\n" if issue.done_ratio -%>
+<%= "#{l(:field_status)}: #{issue.status.name}\n" if issue.status -%>
