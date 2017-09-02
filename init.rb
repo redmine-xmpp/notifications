@@ -9,9 +9,9 @@ require_dependency "user_hooks"
 require_dependency "user"
 
 if User.const_defined? "SAFE_ATTRIBUTES"
-    User::SAFE_ATTRIBUTES << "xmpp_jid"
+  User::SAFE_ATTRIBUTES << "xmpp_jid"
 else
-    User.safe_attributes "xmpp_jid"
+  User.safe_attributes "xmpp_jid"
 end
 
 Redmine::Plugin.register :redmine_xmpp_notifications do
@@ -29,7 +29,7 @@ Rails.logger.info "#{'*'*65}\n* XMPP Bot init.rb\n#{'*'*65}"
 
 # Start bot only when XMPP_BOT_STARTUP env var is set
 ENV['XMPP_BOT_STARTUP'] && Rails.configuration.to_prepare do
-    Rails.logger.info "#{'*'*65}\n* XMPP_BOT_STARTUP env var exists - requesting bot startup\n#{'*'*65}"
+  Rails.logger.info "#{'*'*65}\n* XMPP_BOT_STARTUP env var exists - requesting bot startup\n#{'*'*65}"
 
-    Bot.ping
+  Bot.ping
 end
