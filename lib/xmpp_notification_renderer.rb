@@ -18,6 +18,7 @@ class XmppNotificationRenderer
   class XmppNotificationView < ActionView::Base
     include Redmine::I18n
     include IssuesHelper
+    include CustomFieldsHelper
 
     attr_reader :issue, :journal, :user
 
