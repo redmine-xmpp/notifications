@@ -1,11 +1,16 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class NotifierHookTest <  ActiveSupport::TestCase
-  fixtures :projects, :users, :members, :member_roles, :roles, :issues, :journals, :journal_details, :enabled_modules,
-           :trackers, :issue_statuses, :enumerations, :custom_values, :projects_trackers
+  fixtures :projects, :users, :members, :member_roles, :roles, :issues, :journals, :journal_details,
+           :enabled_modules, :trackers, :issue_statuses, :enumerations, :custom_values, :projects_trackers, :boards,
+           :messages, :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions, :custom_fields
+
+
+  def user
+    @user ||= User.generate!(xmpp_jid: 'name@jabberserver.tld')
+  end
 
   test '#controller_issues_edit_after_save delivers to watchers' do
-    user = User.generate!(xmpp_jid: 'name@jabberserver.tld')
     issue = Issue.first
     Watcher.create!(watchable: issue, user: user)
 
@@ -87,5 +92,57 @@ URL: #{Setting[:protocol]}://#{Setting[:host_name]}/issues/#{issue.id}
       issue:   issue,
       journal: journal
     )
+  end
+
+  test "#controller_wiki_edit_after_save delivers to wiki page watchers" do
+    wiki_page = WikiPage.first
+    Watcher.create!(watchable: wiki_page, user: user)
+
+    message = <<-TXT
+The 'CookBook documentation' wiki page has been updated by Redmine Admin.
+Gzip compression activated
+
+CookBook documentation:
+http://localhost:3000/projects/ecookbook/wiki/CookBook_documentation
+View differences:
+http://localhost:3000/projects/ecookbook/wiki/CookBook_documentation/3/diff
+    TXT
+
+    Bot.expects(:deliver).with('name@jabberserver.tld', message.strip)
+
+    NotifierHook.instance.controller_wiki_edit_after_save(page: wiki_page)
+  end
+
+  test "#controller_messages_new_after_save delivers to board watchers" do
+    message = Message.first
+    Watcher.create!(watchable: message.board, user: user)
+
+    xmpp_message = <<-TXT
+http://localhost:3000/boards/1/topics/1
+Redmine Admin
+
+This is the very first post
+in the forum
+    TXT
+
+    Bot.expects(:deliver).with('name@jabberserver.tld', xmpp_message.strip)
+
+    NotifierHook.instance.controller_messages_new_after_save(message: message)
+  end
+
+  test "#controller_messages_new_after_save delivers to topic watchers" do
+    message = Message.where.not(parent_id: nil).first
+    Watcher.create!(watchable: message.parent, user: user)
+
+    xmpp_message = <<-TXT
+http://localhost:3000/boards/1/topics/1?r=2#message-2
+Redmine Admin
+
+Reply to the first post
+    TXT
+
+    Bot.expects(:deliver).with('name@jabberserver.tld', xmpp_message.strip)
+
+    NotifierHook.instance.controller_messages_new_after_save(message: message)
   end
 end
