@@ -5,6 +5,8 @@ This plugin is intended to provide integration with XMPP messenger (Jabber).
 Following actions will result in notifications to Jabber:
 
 - Create and update issues
+- Edit a wiki page
+- Create a new board topic or comment a topic
 
 Following commands hardcoded into the bot (underscores and angle brackets here for logical grouping purposes only):
 - `+#XXXXX <any_message_you_want_to_set_as_comment_for_issue_number_XXXXX>`
