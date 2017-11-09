@@ -16,4 +16,8 @@
     <label><%= l(:xmpp_label_send_to_watchers) %></label>
     <%= check_box_tag "settings[send_to_watchers]", true, @settings["send_to_watchers"] %>
   </p>
+  <p>
+    <label><%= l(:xmpp_label_use_sidekiq) %></label>
+    <%= check_box_tag "settings[use_sidekiq]", false, @settings["use_sidekiq"] %>
+  </p>
 </fieldset>
