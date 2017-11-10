@@ -4,3 +4,4 @@ en:
   xmpp_label_password: Password
   xmpp_label_notification_settings: Notification settings
   xmpp_label_send_to_watchers: Send notifications to watchers?
+  xmpp_label_use_sidekiq: Send notifications from a Sidekiq background worker (requires redmine_sidekiq plugin)
