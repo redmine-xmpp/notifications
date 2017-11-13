@@ -41,6 +41,21 @@ Don't forget to start Sidekiq along with Rails, e.g. like this:
 bundle exec sidekiq -d -L log/sidekiq.log
 ```
 
+#### Sidekiq and Ruby 2.2
+
+If you for whatever reason can't upgrade to Ruby higher than 2.2, you can still use Sidekiq with this plugin. But for that you'll have to force usage of older versions of Sidekiq and Redis gems, but adding to your `Gemfile.local` in redmine root:
+
+```ruby
+gem "sidekiq", "~> 4.2.10"
+gem "redis", "~> 3.3.5"
+```
+Also comment out or delete first line in `plugins/redmine_sidekiq/Gemfile` in order to avoid version conflict for Sidekiq:
+
+```ruby
+#gem 'sidekiq'
+gem 'sinatra'
+```
+
 ## TODO
 - Allow notifications to be sent after using bot commands
 - ~~Move all bot logic into background process (possibly via `Sidekiq`) and use them via asynchronous background jobs~~
