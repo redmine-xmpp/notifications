@@ -1,6 +1,6 @@
 module XmppNotificationSender
   def dispatch(notification_type, context)
-    config["use_sidekiq"] ? submit_a_job(notification_type, context) : public_send(notification_type, context)
+    use_sidekiq? ? submit_a_job(notification_type, context) : public_send(notification_type, context)
   end
 
   def new_issue(context)
@@ -36,6 +36,8 @@ module XmppNotificationSender
   end
 
   private
+
+  include XmppNotifications::PluginConfig
 
   def verify_sidekiq_presence
     return if Object.const_defined?("Sidekiq")
@@ -74,7 +76,7 @@ module XmppNotificationSender
 
   def notification_recipients(object)
     notification_recipients = object.notified_users
-    notification_recipients += fetch_watchers(object) if config["send_to_watchers"]
+    notification_recipients += fetch_watchers(object) if send_to_watchers?
     notification_recipients.uniq!
     notification_recipients.keep_if {|user| user.xmpp_jid.present? }
     if notification_recipients.any?
@@ -96,9 +98,5 @@ module XmppNotificationSender
     else
       message.parent.try(:notified_watchers) || []
     end
-  end
-
-  def config
-    Setting.plugin_redmine_xmpp_notifications
   end
 end

@@ -22,7 +22,7 @@ Redmine::Plugin.register :redmine_xmpp_notifications do
   url "https://github.com/redmine-xmpp/notifications"
 
   settings default: {
-      "jid" => "", "password" => "", "send_to_watchers" => true, "use_sidekiq" => false
+      "jid" => "", "password" => "", "send_to_watchers" => "true", "use_sidekiq" => ""
   }, partial: "settings/xmpp_settings"
 end
 

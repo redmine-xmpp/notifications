@@ -170,10 +170,8 @@ class Bot
   def initialize
     Rails.logger.info "#{'*'*65}\n* Initializing XMPP Bot\n#{'*'*65}"
 
-    @config = Setting.plugin_redmine_xmpp_notifications
-
-    @jabber_id = @config["jid"]
-    @jabber_password = @config["jidpassword"] or ENV['jabber_password'] or ''
+    @jabber_id = config["jid"]
+    @jabber_password = config["jidpassword"] or ENV['jabber_password'] or ''
 
     @static_config = {
         %r{^\+#([[:digit:]]+)[[:space:]]+(.+)$} => Proc.new do |original_message, issue, comment_message|
@@ -241,4 +239,6 @@ class Bot
     Rails.logger.error "#{self.class.name}##{__method__}: #{e.class} (#{e.message})"
     @client = nil
   end
+
+  include XmppNotifications::PluginConfig
 end
