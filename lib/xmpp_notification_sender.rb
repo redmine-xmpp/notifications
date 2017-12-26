@@ -20,6 +20,7 @@ module XmppNotificationSender
   end
 
   def updated_wiki(context)
+    context[:page].content.author = context[:author] unless context[:author].nil?
     page = context[:page]
 
     deliver(page.content) do |user|
@@ -52,7 +53,7 @@ module XmppNotificationSender
       when :updated_issue
         IssueUpdatedNotifier.perform_async(context[:issue].id, context[:journal].id)
       when :updated_wiki
-        WikiUpdatedNotifier.perform_async(context[:page].id)
+        WikiUpdatedNotifier.perform_async(context[:page].id, context[:page].content.author_id)
       when :message
         MessageNotifier.perform_async(context[:message].id)
       else
