@@ -226,6 +226,9 @@ class Bot
   def deliver jid, message_text, message_type = :chat
     message = Message.new(jid, message_text)
     message.type = message_type
+    hint = REXML::Element::new("no-permanent-store")
+    hint.add_namespace("urn:xmpp:hints")
+    message.add_element(hint)
     client.tap {|client|
       client.send(message) unless client.nil?
     }
